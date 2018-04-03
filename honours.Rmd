@@ -1,0 +1,130 @@
+---
+title: "Honours Lecture Practical"
+output:
+  beamer_presentation: default
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+
+
+## Honours Lecture Practical
+
+Objectives: Rough idea of
+
+- What R is and how it works
+- What simulation studies are and how they work
+
+## Small Print / Assumptions Two sample t-test
+
+1. Normality: Errors are normally distributed
+(robust unless n very small)
+1. Homogeneity of Variances: Variances of errors are equal across groups $\sigma_1^2=\sigma^2_2$.
+(robust unless group sizes unequal $n_\text{max} \ n_\text{min} > 1.5$)
+1. Idependence: Errors are indepdent from each other
+(not robust)
+
+## We are skeptical!
+
+Research questions:
+
+1.  $t$-test valid when the assumptions are met?
+1. What happens when the assumptions are violated?
+
+## Plan
+
+Create artifical data and check what happens
+
+Recap defintion $95\%$ confidence interval estimator:
+
+- Math: $\mathbb{P}(\theta^* \in \delta(D))=95\%$
+- English: The true parameter is within $95\%$ of the generated intervals
+
+--> Generate many intervals (data sets) and check
+
+## Detailed Plan / Pseduocode
+
+- Repeat often (Repeat)
+  1. Generate data (Data)
+  2. Calculate confidence interval (CI)
+  3. Check: True value in confidence interval? (Check)
+- Count how often true value is in confidence interval (Count)
+ 
+## Data: Generating Artifical Data
+5 Coin tosses from a fair coin
+```{r generate data}
+coinTosses <- rbinom(5,1,0.5)
+print(coinTosses)
+```
+
+## Data: Generating Normal Data
+```{r generate normal}
+set.seed(1903)
+group1 <- rnorm(n=10,mean=20,sd=1) 
+group2 <- rnorm(n=10,mean=3,sd=1)
+print(round(group1,2))
+print(round(group2,2))
+```
+
+## CI: Performing the $t$-test
+
+```{r t.test}
+tResult <- t.test(group1,group2,var.equal=TRUE)
+print(tResult)
+```
+
+## CI: Extracting the Confidence Interval
+
+```{r extract t.test result}
+confInter <- tResult$conf.int
+print(confInter)
+```
+
+## Check: Check a  value in CI
+
+```{r CI check}
+toCheck <- 0
+if (toCheck > confInter[1] && toCheck < confInter[2]){
+  isIn <- TRUE
+}else{
+  isIn <- FALSE
+}
+print(isIn)
+```
+
+
+## Repeat: Repeating a Part
+```{r loop}
+for (i in 1:3){
+  variable <- rnorm(n=1,mean=20,sd=1) 
+  print(sprintf('Iteration: %d, Variable %.2f',i,variable))
+}
+```
+
+## Count: Check + Repeat
+```{r loop and check}
+tails <- 0
+for (i in 1:5){
+  coinToss <- rbinom(1,1,0.5)
+  if (coinToss==1){
+    tails <- tails + 1
+  }
+}
+```
+
+## Pair Exercise
+
+Repeat often (for i in 1:100)
+
+  1. Generate data according to the assumptions (rnorm)
+  2. Calculate confidence interval (t.test)
+  3. Check and Count: True value in confidence interval? (if ...; count <- count+1)
+
+## Solution
+
+See extra file
+
+
+## Advanced Function
+
+
