@@ -142,7 +142,7 @@ Repeat often (for i in 1:100)
   2. Calculate confidence interval (t.test)
   3. Check and Count: True value in confidence interval? (if ...; count <- count+1)
   
-You probably need the slides: 
+Slides: *bit.ly/honlab*
 
 ## Solution
 
