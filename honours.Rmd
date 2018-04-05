@@ -4,6 +4,9 @@ output:
   beamer_presentation: default
   ioslides_presentation: default
   slidy_presentation: default
+classoption: "aspectratio=169"
+
+author: Dr. Julian D. Karch
 ---
 
 
@@ -20,8 +23,8 @@ Objectives: Rough idea of
 1. Normality: Errors are normally distributed
 (robust unless n very small)
 1. Homogeneity of Variances: Variances of errors are equal across groups $\sigma_1^2=\sigma^2_2$.
-(robust unless group sizes unequal $n_\text{max} \ n_\text{min} > 1.5$)
-1. Idependence: Errors are indepdent from each other
+(robust unless group sizes unequal $n_\text{max} / n_\text{min} > 1.5$)
+1. Independence: Errors are independent from each other
 (not robust)
 
 ## We are skeptical!
@@ -33,9 +36,9 @@ Research questions:
 
 ## Plan
 
-Create artifical data and check what happens
+Create artificial data and check what happens
 
-Recap defintion $95\%$ confidence interval estimator:
+Recap definition $95\%$ confidence interval estimator:
 
 - Math: $\mathbb{P}(\theta^* \in \delta(D))=95\%$
 - English: The true parameter is within $95\%$ of the generated intervals
@@ -47,9 +50,28 @@ Recap defintion $95\%$ confidence interval estimator:
 - Repeat often (Repeat)
   1. Generate data (Data)
   2. Calculate confidence interval (CI)
-  3. Check: True value in confidence interval? (Check)
+  3. True value in confidence interval? (Check)
 - Count how often true value is in confidence interval (Count)
+
+## Assignments
+```{r assigments}
+x <- 5
+print(x)
+```
  
+## Vectors
+```{r vectors}
+x <- c(1,2,3,4,5,100)
+print(x)
+```
+
+## Functions
+```{r functions}
+print(x)
+maxX <- max(x)
+print(maxX)
+```
+
 ## Data: Generating Artifical Data
 5 Coin tosses from a fair coin
 ```{r generate data}
@@ -119,12 +141,62 @@ Repeat often (for i in 1:100)
   1. Generate data according to the assumptions (rnorm)
   2. Calculate confidence interval (t.test)
   3. Check and Count: True value in confidence interval? (if ...; count <- count+1)
+  
+You probably need the slides: 
 
 ## Solution
 
-See extra file
+```{r load simple, echo=FALSE}
+knitr::read_chunk('labSimple.R')
+```
+
+```{r first}
+<<labSimple>>
+```
+
 
 
 ## Advanced Function
+```{r load advanced}
+source('http://bit.ly/checkttest')
+print(sprintf('All Assumptions; Coverage: %.2f',
+              checkTTest(100)))
+str(checkTTest)
+```
+**Investigate the remaining conditions using the checkTTest function**
+
+
+
+
+
+
+
+## Normality 1
+
+```{r solution advanced 1}
+print(sprintf('No Normality, big n; Coverage: %.2f',
+              checkTTest(100,normal=FALSE)))
+print(sprintf('No Normality; small n; Coverage: %.2f',
+              checkTTest(6,normal=FALSE)))
+```
+
+## Solution Homogeneity
+
+```{r solution advanced 2}
+print(sprintf('No Homogeneity, equal groups; Coverage: %.2f',
+              checkTTest(100,homogeneity=FALSE)))
+print(sprintf('No Homogeneity, unequal groups; Coverage: %.2f',
+              checkTTest(100,homogeneity=FALSE,equalGroups = FALSE)))
+```
+
+## Solution Independence
+```{r solution advanced 3}
+print(sprintf('No Independence; Coverage: %.2f',
+              checkTTest(100,independence = FALSE)))
+```
+
+## The End
+
+![](frequentists_vs_bayesians.png)\
 
 
